@@ -1,0 +1,385 @@
+.journal-container {
+    max-width: 860px;
+}
+
+/* Header */
+.journal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.journal-date-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    justify-content: center;
+}
+
+.day-nav-btn {
+    width: 42px;
+    height: 42px;
+}
+
+.current-date-block {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.journal-day-label {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.entry-dot {
+    width: 9px;
+    height: 9px;
+    background: var(--grad-primary);
+    border-radius: 50%;
+    display: block;
+    background: linear-gradient(135deg, #FFD1DF, #C4D7FF);
+    box-shadow: 0 0 6px rgba(196, 215, 255, 0.6);
+}
+
+.journal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.today-btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+}
+
+/* Toolbar */
+.journal-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.8rem 1.2rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.toolbar-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--glass-border);
+    margin: 0 0.4rem;
+}
+
+.tool-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--text-primary);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tool-btn:hover {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+.text-btn {
+    font-size: 0.9rem;
+    font-weight: 600;
+    width: auto;
+    padding: 0 10px;
+}
+
+/* Color button */
+.color-btn {
+    position: relative;
+    gap: 2px;
+    flex-direction: column;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.color-indicator {
+    display: block;
+    width: 18px;
+    height: 4px;
+    border-radius: 2px;
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Dropdown panels */
+.tool-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 100;
+    padding: 0.6rem;
+    min-width: 130px;
+    border-radius: 16px;
+    animation: fadeInDrop 0.2s ease;
+}
+
+@keyframes fadeInDrop {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tool-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    text-align: left;
+    color: var(--text-primary);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+}
+
+.tool-dropdown-item:hover,
+.tool-dropdown-item.active {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+.color-dropdown {
+    min-width: 160px;
+    padding: 0.6rem;
+}
+
+.color-option {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.color-option:hover,
+.color-option.active {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+.color-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    flex-shrink: 0;
+}
+
+/* Sticker buttons on toolbar */
+.sticker-group {
+    gap: 0.2rem;
+}
+
+.sticker-cat-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sticker-cat-btn:hover,
+.sticker-cat-btn.active {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    transform: scale(1.15);
+}
+
+/* Save indicator */
+.toolbar-save {
+    margin-left: auto;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+}
+
+.saved-badge {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: var(--grad-primary);
+    color: var(--text-primary);
+    animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Sticker Panel */
+.sticker-panel {
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    animation: slideDown 0.25s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sticker-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.sticker-btn {
+    font-size: 1.8rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sticker-btn:hover {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    transform: scale(1.2) rotate(-3deg);
+}
+
+/* Editor Area */
+.journal-editor-card {
+    padding: 0;
+    min-height: 460px;
+    border-radius: 28px;
+    overflow: hidden;
+}
+
+.editor-placeholder-wrapper {
+    position: relative;
+    min-height: 460px;
+}
+
+.journal-editor {
+    min-height: 460px;
+    padding: 3rem;
+    outline: none;
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: var(--text-primary);
+    background: transparent;
+    position: relative;
+    z-index: 1;
+}
+
+.journal-editor:empty::before {
+    content: attr(data-placeholder);
+    color: var(--text-secondary);
+    opacity: 0.6;
+    pointer-events: none;
+    display: block;
+    font-style: italic;
+}
+
+.journal-editor ul,
+.journal-editor ol {
+    margin-left: 2rem;
+}
+
+.journal-editor li {
+    margin-bottom: 0.3rem;
+}
+
+/* Dark theme fixes */
+[data-theme="dark-aurora"] .tool-btn:hover,
+[data-theme="dark-aurora"] .sticker-cat-btn:hover,
+[data-theme="dark-aurora"] .sticker-cat-btn.active,
+[data-theme="midnight"] .tool-btn:hover,
+[data-theme="midnight"] .sticker-cat-btn:hover,
+[data-theme="midnight"] .sticker-cat-btn.active {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 768px) {
+    .journal-header {
+        flex-wrap: wrap;
+    }
+
+    .journal-day-label {
+        font-size: 1rem;
+    }
+
+    .journal-toolbar {
+        gap: 0.3rem;
+    }
+
+    .journal-editor {
+        padding: 1.5rem;
+        font-size: 1rem;
+    }
+}

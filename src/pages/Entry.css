@@ -1,0 +1,174 @@
+.premium-entry-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-color);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* Inherit mesh gradients from index.css for background continuity */
+.premium-entry-container::before,
+.premium-entry-container::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 1;
+    opacity: 0.6;
+    animation: pulseBg 4s infinite alternate ease-in-out;
+}
+
+.premium-entry-container::before {
+    top: -100px;
+    left: -100px;
+    background: rgba(255, 65, 108, 0.4);
+}
+
+.premium-entry-container::after {
+    bottom: -100px;
+    right: -100px;
+    background: rgba(142, 84, 233, 0.4);
+    animation-delay: -2s;
+}
+
+@keyframes pulseBg {
+    0% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+}
+
+/* Glass Orb */
+.glass-orb {
+    position: relative;
+    z-index: 10;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 8px 32px 0 rgba(31, 38, 135, 0.1),
+        inset 0 0 40px rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.25, 1, 0.25, 1);
+}
+
+.glass-orb.initial {
+    transform: scale(0.6) translateY(30px);
+    opacity: 0;
+}
+
+.glass-orb.reveal {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    box-shadow:
+        0 20px 60px rgba(255, 65, 108, 0.3),
+        inset 0 0 60px rgba(255, 255, 255, 0.8);
+}
+
+.glass-orb.expand {
+    transform: scale(15);
+    opacity: 0;
+    filter: blur(5px);
+    transition: all 0.5s cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+.orb-inner {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease 0.2s;
+}
+
+.glass-orb.reveal .orb-inner {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.glass-orb.expand .orb-inner {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.orb-title {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.text-gradient {
+    background: var(--grad-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.orb-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Ambient Particles */
+.ambient-particles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    z-index: 5;
+}
+
+.ambient-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+    opacity: 0;
+    box-shadow: 0 0 10px rgba(255, 65, 108, 0.8);
+    animation: drift var(--duration) ease-in-out infinite alternate;
+    animation-delay: var(--delay);
+}
+
+.glass-orb.reveal~.ambient-particles .ambient-dot {
+    animation-name: driftFade;
+}
+
+@keyframes driftFade {
+    0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(1.5);
+        opacity: 0;
+    }
+}
