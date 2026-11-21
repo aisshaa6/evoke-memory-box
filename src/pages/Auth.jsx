@@ -35,7 +35,12 @@ export default function Auth() {
             }
             navigate('/home');
         } catch (err) {
-            setError(err.message);
+            if (err.code === 'CONFIRM_EMAIL') {
+                setError(t('auth.confirmEmail'));
+                setIsLogin(true);
+            } else {
+                setError(err.message);
+            }
         } finally {
             setIsLoading(false);
         }

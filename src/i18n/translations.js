@@ -91,7 +91,8 @@ export const translations = {
             createAccount: "Yeni hesap oluştur",
             loginHere: "Hesabınıza giriş yapın",
             errorName: "Lütfen adınızı girin.",
-            errorPassword: "Şifreler uyuşmuyor."
+            errorPassword: "Şifreler uyuşmuyor.",
+            confirmEmail: "Hesabınız oluşturuldu! Giriş yapmadan önce e-postanızdaki bağlantıyla hesabınızı doğrulayın."
         },
         map: {
             title: "Anı Haritası",
@@ -314,7 +315,8 @@ export const translations = {
             createAccount: "Create new account",
             loginHere: "Login to your account",
             errorName: "Please enter your name.",
-            errorPassword: "Passwords do not match."
+            errorPassword: "Passwords do not match.",
+            confirmEmail: "Account created! Confirm it with the link in your email, then log in."
         },
         map: {
             title: "Memory Map",
@@ -536,7 +538,8 @@ export const translations = {
             createAccount: "Создать новый аккаунт",
             loginHere: "Войдите в свой аккаунт",
             errorName: "Пожалуйста, введите ваше имя.",
-            errorPassword: "Пароли не совпадают."
+            errorPassword: "Пароли не совпадают.",
+            confirmEmail: "Аккаунт создан! Подтвердите его по ссылке из письма, затем войдите."
         },
         map: {
             title: "Карта воспоминаний",

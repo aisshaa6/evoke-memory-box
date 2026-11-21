@@ -33,11 +33,15 @@ export function AuthProvider({ children }) {
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
-            options: { data: { name } },
+            options: { data: { name }, emailRedirectTo: window.location.origin + '/auth' },
         });
         if (error) throw error;
         // Email confirmation açıqdırsa session olmur
-        if (!data.session) throw new Error('Emailinizi təsdiqləyin, sonra daxil olun.');
+        if (!data.session) {
+            const err = new Error('CONFIRM_EMAIL');
+            err.code = 'CONFIRM_EMAIL';
+            throw err;
+        }
         setUser(await toAppUser(data.user));
     };
 
