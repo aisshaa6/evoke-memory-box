@@ -582,3 +582,40 @@
         width: 100%;
     }
 }
+/* Mobile: top nav must fit 375px without horizontal scroll */
+@media (max-width: 600px) {
+    .home-top-nav {
+        padding: 0.6rem 0.75rem;
+        gap: 0.5rem;
+        top: 0.75rem;
+    }
+
+    .top-nav-right {
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    /* Date is low-value on a phone and pushed the nav to 451px */
+    .current-date {
+        display: none;
+    }
+
+    .quick-add-btn {
+        min-height: 44px;
+        white-space: nowrap;
+    }
+
+    .profile-dropdown-container {
+        min-width: 0;
+    }
+
+    .user-profile-chip {
+        min-width: 0;
+    }
+
+    .user-greeting {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

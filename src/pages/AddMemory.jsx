@@ -5,6 +5,7 @@ import { useAudioRecorder } from '../hooks/useAudioRecorder';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Star, ArrowLeft, Camera, Mic, Square, Trash2, MapPin, Map } from 'lucide-react';
 import LocationMapPicker from '../components/LocationMapPicker';
+import { readImageFile, MAX_PHOTO_MB } from '../lib/image';
 import './AddMemory.css';
 
 export default function AddMemory() {
@@ -35,42 +36,20 @@ export default function AddMemory() {
     const [isSaving, setIsSaving] = useState(false);
     const [showMapPicker, setShowMapPicker] = useState(false);
 
-    const handlePhotoUpload = (e) => {
+    const handlePhotoUpload = async (e) => {
         const file = e.target.files[0];
+        e.target.value = '';
         if (!file) return;
-
-        // Warn if file is large
-        const sizeMB = file.size / (1024 * 1024);
-        if (sizeMB > 4) {
+        if (file.size / (1024 * 1024) > MAX_PHOTO_MB) {
             setPhotoWarning('error');
             return;
-        } else if (sizeMB > 1.5) {
-            setPhotoWarning('warn');
-        } else {
-            setPhotoWarning(null);
         }
-
-        // Compress via canvas if > 1MB
-        if (sizeMB > 1) {
-            const img = new Image();
-            const url = URL.createObjectURL(file);
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const MAX = 1200;
-                let w = img.width, h = img.height;
-                if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
-                if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
-                canvas.width = w; canvas.height = h;
-                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                const compressed = canvas.toDataURL('image/jpeg', 0.75);
-                setPhoto(compressed);
-                URL.revokeObjectURL(url);
-            };
-            img.src = url;
-        } else {
-            const reader = new FileReader();
-            reader.onloadend = () => setPhoto(reader.result);
-            reader.readAsDataURL(file);
+        try {
+            const { dataUrl, compressed } = await readImageFile(file);
+            setPhoto(dataUrl);
+            setPhotoWarning(compressed ? 'warn' : null);
+        } catch {
+            setPhotoWarning('error');
         }
     };
 
@@ -267,6 +246,8 @@ export default function AddMemory() {
                                 placeholder={t('addMemory.customTagPlaceholder')}
                                 value={customTag}
                                 onChange={e => setCustomTag(e.target.value)}
+                                onKeyDown={e => { if (e.key === 'Enter') addCustomTag(e); }}
+                                enterKeyHint="done"
                                 className="custom-tag-input premium-input"
                             />
                             <button type="button" onClick={addCustomTag} className="btn-secondary-outline glass-btn">

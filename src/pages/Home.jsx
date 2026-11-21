@@ -15,7 +15,8 @@ export default function Home() {
     const fileInputRef = useRef(null);
     const dropdownRef = useRef(null);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
-    const latest = memories.length > 0 ? memories[memories.length - 1] : null;
+    // memories are sorted newest-first (created_at desc), so the latest is the first item
+    const latest = memories.length > 0 ? memories[0] : null;
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -260,7 +261,7 @@ export default function Home() {
                         <span className="stat-label">{t('home.savedMemories')}</span>
                         {memories.length > 0 && (
                             <p className="latest-title mt-3" style={{ fontSize: '1.1rem', fontWeight: 400 }}>
-                                {t('home.last')}: <strong>{memories[memories.length - 1].title}</strong>
+                                {t('home.last')}: <strong>{latest.title}</strong>
                             </p>
                         )}
                     </div>
