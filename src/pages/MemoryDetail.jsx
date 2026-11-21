@@ -112,8 +112,9 @@ export default function MemoryDetail() {
         setCustomTag('');
     };
 
-    const handleSave = () => {
-        updateMemory(id, {
+    const handleSave = async () => {
+        try {
+        await updateMemory(id, {
             title,
             date,
             note,
@@ -125,6 +126,10 @@ export default function MemoryDetail() {
         });
         setIsEditing(false);
         clearAudio();
+        } catch (err) {
+            console.error(err);
+            alert(err.message);
+        }
     };
 
     const handleDelete = () => {
