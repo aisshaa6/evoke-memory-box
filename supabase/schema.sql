@@ -26,6 +26,10 @@ create table public.journal_entries (
 alter table public.memories enable row level security;
 alter table public.journal_entries enable row level security;
 
+-- Data API giriş icazəsi (auto-grant söndürülmüş project-lər üçün)
+grant select, insert, update, delete on public.memories to authenticated;
+grant select, insert, update, delete on public.journal_entries to authenticated;
+
 create policy "own memories" on public.memories for all using (user_id = auth.uid()) with check (user_id = auth.uid());
 create policy "own journal" on public.journal_entries for all using (user_id = auth.uid()) with check (user_id = auth.uid());
 
