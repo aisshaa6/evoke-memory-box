@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import EvokeLogo from '../components/EvokeLogo';
 import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { LANGUAGES } from '../lib/themes';
 import './Auth.css';
 
 export default function Auth() {
@@ -18,7 +19,7 @@ export default function Auth() {
     
     const { login, signup } = useAuth();
     const navigate = useNavigate();
-    const { t } = useLanguage();
+    const { t, language, setLanguage } = useLanguage();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -74,6 +75,21 @@ export default function Auth() {
 
                 {/* Right Side: Form */}
                 <div className="auth-form-side">
+                    {/* Language is chosen before sign-in, so it stays visible here (inline, not a floating button) */}
+                    <div className="auth-lang-row" role="radiogroup" aria-label={t('settings.language')}>
+                        {LANGUAGES.map(l => (
+                            <button
+                                key={l.id}
+                                type="button"
+                                role="radio"
+                                aria-checked={language === l.id}
+                                className={`auth-lang-pill ${language === l.id ? 'active' : ''}`}
+                                onClick={() => setLanguage(l.id)}
+                            >
+                                {l.id.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
                     <div className="auth-header text-center mb-4">
                         <div className="mb-3" style={{ display: 'inline-block' }}>
                             <EvokeLogo size={60} className="text-gradient" />

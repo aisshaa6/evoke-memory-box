@@ -6,6 +6,7 @@ import { useAudioRecorder } from '../hooks/useAudioRecorder';
 import { useLanguage } from '../contexts/LanguageContext';
 import LocationMapPicker from '../components/LocationMapPicker';
 import { readImageFile, MAX_PHOTO_MB } from '../lib/image';
+import { DEFAULT_TAG_KEYS, normalizeTag } from '../i18n/tags';
 import './MemoryDetail.css';
 
 export default function MemoryDetail() {
@@ -14,14 +15,7 @@ export default function MemoryDetail() {
     const { t, language, translateTag } = useLanguage();
     const { memories, loading, updateMemory, deleteMemory, toggleFavorite } = useMemories();
 
-    const DEFAULT_TAGS = [
-        t('addMemory.tags.family'),
-        t('addMemory.tags.travel'),
-        t('addMemory.tags.work'),
-        t('addMemory.tags.special'),
-        t('addMemory.tags.nature'),
-        t('addMemory.tags.art')
-    ];
+    const DEFAULT_TAGS = DEFAULT_TAG_KEYS;
     const memory = memories.find(m => m.id === id);
 
     const { isRecording, startRecording, stopRecording, audioBase64, audioSizeMB, clearAudio } = useAudioRecorder();
@@ -104,8 +98,9 @@ export default function MemoryDetail() {
 
     const addCustomTag = (e) => {
         e.preventDefault();
-        if (customTag.trim() && !tags.includes(customTag.trim())) {
-            setTags([...tags, customTag.trim()]);
+        const tag = normalizeTag(customTag.trim());
+        if (tag && !tags.includes(tag)) {
+            setTags([...tags, tag]);
         }
         setCustomTag('');
     };
@@ -144,7 +139,7 @@ export default function MemoryDetail() {
         return (
             <div className="page-container detail-container">
                 <header className="page-header mb-4 flex-center" style={{ justifyContent: 'space-between' }}>
-                    <button onClick={cancelEdit} className="back-btn glass-btn">
+                    <button onClick={cancelEdit} className="back-btn glass-btn" aria-label={t('common.cancel')}>
                         <X size={24} color="var(--text-primary)" />
                     </button>
                     <h1 className="header-title" style={{ fontSize: '2rem' }}>{t('detail.editMemory')}</h1>
@@ -317,7 +312,7 @@ export default function MemoryDetail() {
     return (
         <div className="page-container detail-container">
             <header className="page-header mb-4 flex-center" style={{ justifyContent: 'space-between' }}>
-                <button onClick={() => navigate('/browse')} className="back-btn glass-btn">
+                <button onClick={() => navigate('/browse')} className="back-btn glass-btn" aria-label={t('a11y.back')}>
                     <ArrowLeft size={24} color="var(--text-primary)" />
                 </button>
                 <div className="detail-header-actions">

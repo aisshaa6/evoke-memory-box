@@ -286,3 +286,30 @@
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
 }
+
+.auth-lang-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-lang-pill {
+    min-width: 44px;
+    min-height: 36px;
+    padding: 0 0.6rem;
+    border-radius: 18px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+}
+
+.auth-lang-pill.active {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
+}

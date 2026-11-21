@@ -62,6 +62,9 @@
     box-shadow: 0 4px 15px rgba(110, 110, 140, 0.05);
     transition: all 0.3s ease;
     cursor: pointer;
+    font: inherit;
+    color: inherit;
+    min-height: 44px;
 }
 
 .user-profile-chip:hover,
@@ -95,7 +98,8 @@
 .profile-dropdown {
     position: absolute;
     top: calc(100% + 12px);
-    right: 0;
+    /* chip sits on the left edge, so anchor left — right:0 pushed the menu off-screen on phones */
+    left: 0;
     min-width: 220px;
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(20px);
@@ -109,7 +113,7 @@
 .dropdown-arrow {
     position: absolute;
     top: -6px;
-    right: 24px;
+    left: 24px;
     width: 12px;
     height: 12px;
     background: rgba(255, 255, 255, 0.9);
@@ -617,5 +621,78 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+}
+
+/* Mobile: Home was ~2200px of full-width cards. Bottom nav now covers the main
+   destinations, so the hero shrinks and secondary tiles become a 2-column grid —
+   everything is visible in about two screens instead of four. */
+@media (max-width: 600px) {
+    .premium-header {
+        gap: 1rem;
+    }
+
+    .hero-logo-box {
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+    }
+
+    .hero-logo-box svg {
+        width: 36px;
+        height: 36px;
+    }
+
+    .hero-title {
+        font-size: 2.4rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .bento-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    .bento-large {
+        grid-column: span 2;
+    }
+
+    .bento-item:not(.bento-large) {
+        padding: 1rem;
+        min-height: 128px;
+    }
+
+    .bento-item:not(.bento-large) .bento-desc,
+    .bento-item:not(.bento-large) .action-circle {
+        display: none;
+    }
+
+    .bento-item:not(.bento-large) .bento-title {
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+
+    .bento-item:not(.bento-large) .icon-glass {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+    }
+
+    .bento-large .bento-title {
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .bento-large .action-circle {
+        top: 1rem;
+        right: 1rem;
+    }
+
+    /* duplicates the spotlight card right above */
+    .bento-item .latest-title {
+        display: none;
     }
 }
