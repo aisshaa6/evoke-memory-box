@@ -26,15 +26,12 @@ export default function Auth() {
         setIsLoading(true);
 
         try {
-            // Fake network delay for premium feel
-            await new Promise(res => setTimeout(res, 800));
-
             if (isLogin) {
-                login(email, password);
+                await login(email, password);
             } else {
                 if (!name.trim()) throw new Error(t('auth.errorName'));
                 if (password !== passwordConfirm) throw new Error(t('auth.errorPassword'));
-                signup(name, email, password);
+                await signup(name, email, password);
             }
             navigate('/home');
         } catch (err) {

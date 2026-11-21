@@ -40,7 +40,7 @@ export default function Home() {
             const reader = new FileReader();
             reader.onload = (event) => {
                 const base64Str = event.target.result;
-                updateProfile(base64Str);
+                updateProfile(base64Str).catch(err => alert(err.message));
             };
             reader.readAsDataURL(file);
         }

@@ -32,6 +32,7 @@ export default function AddMemory() {
     const [tags, setTags] = useState([]);
     const [customTag, setCustomTag] = useState('');
     const [isFavorite, setIsFavorite] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const [showMapPicker, setShowMapPicker] = useState(false);
 
     const handlePhotoUpload = (e) => {
@@ -87,9 +88,12 @@ export default function AddMemory() {
         setCustomTag('');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        addMemory({
+        if (isSaving) return;
+        setIsSaving(true);
+        try {
+        await addMemory({
             title,
             date,
             note,
@@ -100,6 +104,11 @@ export default function AddMemory() {
             isFavorite
         });
         navigate('/browse');
+        } catch (err) {
+            console.error(err);
+            alert(err.message);
+            setIsSaving(false);
+        }
     };
 
     return (

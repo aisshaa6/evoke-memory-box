@@ -1,44 +1,41 @@
 import { useState, useEffect, useCallback } from 'react';
-
-const STORAGE_KEY = 'ani_kutusu_journal';
+import { supabase } from '../lib/supabase';
+import { useAuth } from '../contexts/AuthContext';
 
 export function useJournal() {
+    const { user } = useAuth();
     const [entries, setEntries] = useState({});
 
     useEffect(() => {
-        try {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) setEntries(JSON.parse(saved));
-        } catch (e) { /* ignore */ }
-    }, []);
-
-    const saveEntry = useCallback((dateKey, htmlContent) => {
-        setEntries(prev => {
-            const updated = {
-                ...prev,
-                [dateKey]: { content: htmlContent, updatedAt: new Date().toISOString() }
-            };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-            return updated;
+        if (!user) return;
+        supabase.from('journal_entries').select('date_key, content, updated_at').then(({ data, error }) => {
+            if (error) { console.error(error); return; }
+            const map = {};
+            data.forEach(r => { map[r.date_key] = { content: r.content, updatedAt: r.updated_at }; });
+            setEntries(map);
         });
+    }, [user]);
+
+    const saveEntry = useCallback(async (dateKey, htmlContent) => {
+        const updatedAt = new Date().toISOString();
+        setEntries(prev => ({ ...prev, [dateKey]: { content: htmlContent, updatedAt } }));
+        const { error } = await supabase.from('journal_entries')
+            .upsert({ date_key: dateKey, content: htmlContent, updated_at: updatedAt }, { onConflict: 'user_id,date_key' });
+        if (error) console.error(error);
     }, []);
 
-    const deleteEntry = useCallback((dateKey) => {
+    const deleteEntry = useCallback(async (dateKey) => {
         setEntries(prev => {
             const updated = { ...prev };
             delete updated[dateKey];
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
             return updated;
         });
+        const { error } = await supabase.from('journal_entries').delete().eq('date_key', dateKey);
+        if (error) console.error(error);
     }, []);
 
-    const getEntry = useCallback((dateKey) => {
-        return entries[dateKey] || null;
-    }, [entries]);
-
-    const hasEntry = useCallback((dateKey) => {
-        return !!(entries[dateKey]?.content?.trim());
-    }, [entries]);
+    const getEntry = useCallback((dateKey) => entries[dateKey] || null, [entries]);
+    const hasEntry = useCallback((dateKey) => !!(entries[dateKey]?.content?.trim()), [entries]);
 
     return { entries, saveEntry, deleteEntry, getEntry, hasEntry };
 }
