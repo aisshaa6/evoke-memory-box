@@ -10,7 +10,7 @@ const PIE_COLORS = ['#FFD1DF', '#C4D7FF', '#E2C2FF', '#B5E8FB', '#FFB6C1', '#B0E
 
 export default function Statistics() {
     const { memories } = useMemories();
-    const { t } = useLanguage();
+    const { t, translateTag } = useLanguage();
     const navigate = useNavigate();
 
     const totalMemories = memories.length;
@@ -39,15 +39,15 @@ export default function Statistics() {
             }
         });
         return Object.entries(counts)
-            .map(([name, value]) => ({ name, value }))
+            .map(([key, value]) => ({ name: translateTag(key), value }))
             .sort((a, b) => b.value - a.value)
             .slice(0, 6); // Top 6 tags
-    }, [memories]);
+    }, [memories, translateTag]);
 
     return (
         <div className="page-container stats-container">
             <header className="page-header stats-header flex-center" style={{ justifyContent: 'space-between', marginBottom: '2rem' }}>
-                <button onClick={() => navigate('/home')} className="back-btn glass-btn">
+                <button onClick={() => navigate('/home')} className="back-btn glass-btn" aria-label={t('a11y.back')}>
                     <ArrowLeft size={24} color="var(--text-primary)" />
                 </button>
                 <h1 className="header-title" style={{ fontSize: '2rem' }}>{t('stats.pageTitle')}</h1>

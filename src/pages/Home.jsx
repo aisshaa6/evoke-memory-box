@@ -1,10 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useRef, useState, useEffect } from 'react';
-import { Camera, Layers, BarChart3, Plus, ArrowUpRight, CalendarDays, Map, NotebookPen, Star, MapPin, LogOut, ImagePlus } from 'lucide-react';
+import { useRef, useState, useEffect, useCallback } from 'react';
+import { Camera, Layers, BarChart3, Plus, ArrowUpRight, CalendarDays, Map, NotebookPen, Star, MapPin, LogOut, ImagePlus, Palette } from 'lucide-react';
 import EvokeLogo from '../components/EvokeLogo';
 import { useAuth } from '../contexts/AuthContext';
 import { useMemories } from '../hooks/useMemories';
 import { useLanguage } from '../contexts/LanguageContext';
+import SettingsSheet from '../components/SettingsSheet';
 import './Home.css';
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
     const fileInputRef = useRef(null);
     const dropdownRef = useRef(null);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
     // memories are sorted newest-first (created_at desc), so the latest is the first item
     const latest = memories.length > 0 ? memories[0] : null;
 
@@ -27,6 +29,8 @@ export default function Home() {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    const closeSettings = useCallback(() => setShowSettings(false), []);
 
     const formatDate = (d) => {
         try { return new Date(d).toLocaleDateString(language === 'tr' ? 'tr-TR' : language === 'ru' ? 'ru-RU' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }); }
@@ -53,20 +57,23 @@ export default function Home() {
             {user && (
                 <nav className="home-top-nav">
                     <div className="profile-dropdown-container" ref={dropdownRef}>
-                        <div 
-                            className={`user-profile-chip ${showProfileMenu ? 'active' : ''}`} 
-                            onClick={() => setShowProfileMenu(!showProfileMenu)} 
-                            title={t('common.profile')}
+                        <button
+                            type="button"
+                            className={`user-profile-chip ${showProfileMenu ? 'active' : ''}`}
+                            onClick={() => setShowProfileMenu(!showProfileMenu)}
+                            aria-haspopup="menu"
+                            aria-expanded={showProfileMenu}
+                            aria-label={t('a11y.profileMenu')}
                         >
                         <div className="user-avatar">
                             {user.photo ? (
-                                <img src={user.photo} alt="Profil" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                                <img src={user.photo} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                             ) : (
                                 user.name.charAt(0).toUpperCase()
                             )}
                         </div>
                         <span className="user-greeting">{t('common.greeting')}, {user.name.split(' ')[0]}</span>
-                    </div>
+                    </button>
 
                     {showProfileMenu && (
                         <div className="profile-dropdown slide-down">
@@ -79,6 +86,15 @@ export default function Home() {
                                 }}
                             >
                                 <ImagePlus size={16} /> {t('common.uploadPhoto')}
+                            </button>
+                            <button
+                                className="dropdown-item"
+                                onClick={() => {
+                                    setShowSettings(true);
+                                    setShowProfileMenu(false);
+                                }}
+                            >
+                                <Palette size={16} /> {t('settings.title')}
                             </button>
                             <button className="dropdown-item text-danger" onClick={logout}>
                                 <LogOut size={16} /> {t('common.logout')}
@@ -269,6 +285,7 @@ export default function Home() {
 
             </div>
 
+            <SettingsSheet open={showSettings} onClose={closeSettings} />
         </div>
     );
 }

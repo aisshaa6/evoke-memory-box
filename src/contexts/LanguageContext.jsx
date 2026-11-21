@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { translations } from '../i18n/translations';
+import { normalizeTag } from '../i18n/tags';
 
 const LanguageContext = createContext();
 
@@ -37,16 +38,8 @@ export function LanguageProvider({ children }) {
 
     const translateTag = (tagStr) => {
         if (!tagStr) return tagStr;
-        for (const lang of Object.keys(translations)) {
-            const tagKeys = translations[lang]?.common?.tags;
-            if (!tagKeys) continue;
-            for (const [key, value] of Object.entries(tagKeys)) {
-                if (value.toLowerCase() === tagStr.toLowerCase()) {
-                    return translations[language].common.tags[key];
-                }
-            }
-        }
-        return tagStr;
+        const key = normalizeTag(tagStr);
+        return translations[language]?.common?.tags?.[key] || tagStr;
     };
 
     return (

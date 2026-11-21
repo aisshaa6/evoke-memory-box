@@ -6,7 +6,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import './Browse.css';
 
 export default function Browse() {
-    const { memories, deleteMemory, toggleFavorite } = useMemories();
+    const { memories, toggleFavorite } = useMemories();
     const { t, language, translateTag } = useLanguage();
     const navigate = useNavigate();
     const location = useLocation();
@@ -58,7 +58,7 @@ export default function Browse() {
         <div className="page-container browse-container">
             <header className="page-header browse-header">
                 <div className="header-left">
-                    <button onClick={() => navigate('/home')} className="back-btn glass-btn">
+                    <button onClick={() => navigate('/home')} className="back-btn glass-btn" aria-label={t('a11y.back')}>
                         <ArrowLeft size={24} color="var(--text-primary)" />
                     </button>
                     <div>
@@ -66,8 +66,8 @@ export default function Browse() {
                     </div>
                 </div>
                 <div className="header-actions">
-                    <button onClick={showRandomMemory} className="btn-gradient action-btn">
-                        <Shuffle size={18} /> {t('browse.surpriseMe')}
+                    <button onClick={showRandomMemory} className="btn-gradient action-btn surprise-btn" aria-label={t('browse.surpriseMe')}>
+                        <Shuffle size={18} aria-hidden="true" /> <span className="btn-label">{t('browse.surpriseMe')}</span>
                     </button>
                 </div>
             </header>
@@ -81,10 +81,17 @@ export default function Browse() {
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                         className="search-input-aurora"
+                        aria-label={t('browse.searchPlaceholder')}
+                        enterKeyHint="search"
                     />
                 </div>
-                <button className={`filter-toggle-btn ${showFilters ? 'active' : ''}`} onClick={() => setShowFilters(!showFilters)}>
-                    <Filter size={18} /> {t('browse.filters')}
+                <button
+                    className={`filter-toggle-btn ${showFilters ? 'active' : ''}`}
+                    onClick={() => setShowFilters(!showFilters)}
+                    aria-expanded={showFilters}
+                    aria-label={t('browse.filters')}
+                >
+                    <Filter size={18} aria-hidden="true" /> <span className="btn-label">{t('browse.filters')}</span>
                 </button>
             </div>
 
@@ -146,9 +153,21 @@ export default function Browse() {
                     {filteredMemories.map((memory) => {
                         const hasPhoto = !!memory.photo;
                         return (
-                            <div key={memory.id} className="memory-card glass-card" onClick={() => navigate(`/memory/${memory.id}`)}>
+                            <div
+                                key={memory.id}
+                                className="memory-card glass-card"
+                                role="link"
+                                tabIndex={0}
+                                onClick={() => navigate(`/memory/${memory.id}`)}
+                                onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/memory/${memory.id}`); }}
+                            >
 
-                                <button className={`card-fav-btn ${memory.isFavorite ? 'active' : ''}`} onClick={(e) => { e.stopPropagation(); toggleFavorite(memory.id); }}>
+                                <button
+                                    className={`card-fav-btn ${memory.isFavorite ? 'active' : ''}`}
+                                    onClick={(e) => { e.stopPropagation(); toggleFavorite(memory.id); }}
+                                    aria-label={memory.isFavorite ? t('a11y.unfavorite') : t('a11y.favorite')}
+                                    aria-pressed={!!memory.isFavorite}
+                                >
                                     <Star fill={memory.isFavorite ? "#FF416C" : "none"} color={memory.isFavorite ? "#FF416C" : "var(--text-secondary)"} size={22} />
                                 </button>
 
@@ -173,7 +192,8 @@ export default function Browse() {
                                         </div>
                                     )}
                                     {memory.audio && (
-                                        <div className="card-audio mt-3">
+                                        // Playing audio must not open the detail page
+                                        <div className="card-audio mt-3" onClick={(e) => e.stopPropagation()}>
                                             <audio controls src={memory.audio} />
                                         </div>
                                     )}
@@ -187,7 +207,7 @@ export default function Browse() {
             {randomMemory && (
                 <div className="modal-overlay" onClick={() => setRandomMemory(null)}>
                     <div className="aurora-modal" onClick={e => e.stopPropagation()}>
-                        <button className="close-modal glass-btn" onClick={() => setRandomMemory(null)}>
+                        <button className="close-modal glass-btn" onClick={() => setRandomMemory(null)} aria-label={t('settings.close')}>
                             <X size={24} />
                         </button>
 

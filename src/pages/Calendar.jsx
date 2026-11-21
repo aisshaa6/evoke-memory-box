@@ -8,7 +8,7 @@ import './Calendar.css';
 
 export default function Calendar() {
     const navigate = useNavigate();
-    const { t } = useLanguage();
+    const { t, translateTag } = useLanguage();
     const { memories } = useMemories();
     const { entries } = useJournal();
 
@@ -63,7 +63,7 @@ export default function Calendar() {
     return (
         <div className="page-container calendar-container">
             <header className="page-header mb-4 flex-center" style={{ justifyContent: 'space-between' }}>
-                <button onClick={() => navigate('/home')} className="back-btn glass-btn">
+                <button onClick={() => navigate('/home')} className="back-btn glass-btn" aria-label={t('a11y.back')}>
                     <ArrowLeft size={24} color="var(--text-primary)" />
                 </button>
                 <h1 className="header-title" style={{ fontSize: '2rem' }}>{t('calendar.pageTitle')}</h1>
@@ -115,7 +115,7 @@ export default function Calendar() {
                                             ))}
                                         </div>
                                     )}
-                                    {hasJournal && <span className="cal-journal-dot" title="Günlük var" />}
+                                    {hasJournal && <span className="cal-journal-dot" title={t('calendar.journalEntry')} />}
                                 </div>
                                 {hasFav && <Star size={8} className="cal-fav-star" fill="#FF416C" color="#FF416C" />}
                             </button>
@@ -167,7 +167,7 @@ export default function Calendar() {
                                         <p className="day-card-note">{m.note}</p>
                                         {m.tags && m.tags.length > 0 && (
                                             <div className="day-card-tags">
-                                                {m.tags.map(t => <span key={t} className="detail-tag-chip">{t}</span>)}
+                                                {m.tags.map(tag => <span key={tag} className="detail-tag-chip">{translateTag(tag)}</span>)}
                                             </div>
                                         )}
                                     </div>

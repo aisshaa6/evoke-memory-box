@@ -1,0 +1,158 @@
+.sheet-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(40, 40, 60, 0.35);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    animation: sheetFade 0.2s ease;
+}
+
+.settings-sheet {
+    width: 100%;
+    max-width: 520px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: var(--bg-color);
+    border-radius: 28px 28px 0 0;
+    padding: 0.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -10px 40px rgba(110, 110, 140, 0.2);
+    color: var(--text-primary);
+    animation: sheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 769px) {
+    .sheet-overlay { align-items: center; }
+    .settings-sheet { border-radius: 28px; }
+}
+
+.sheet-handle {
+    width: 40px;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(110, 110, 140, 0.3);
+    margin: 0.25rem auto 0.75rem;
+}
+
+.sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.sheet-header h2 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.sheet-close {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(110, 110, 140, 0.1);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.sheet-section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    margin: 1.25rem 0 0.75rem;
+}
+
+.sheet-themes {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+}
+
+.sheet-theme {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.25rem 0;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.sheet-swatch {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(110, 110, 140, 0.15);
+    outline: 3px solid transparent;
+    outline-offset: 2px;
+    transition: outline-color 0.2s;
+}
+
+.sheet-theme.active .sheet-swatch {
+    outline-color: var(--text-primary);
+}
+
+.sheet-theme-label {
+    font-size: 0.75rem;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.sheet-langs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sheet-lang {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 48px;
+    padding: 0 1rem;
+    border-radius: 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: left;
+}
+
+.sheet-lang.active {
+    background: rgba(110, 110, 140, 0.1);
+    font-weight: 600;
+}
+
+.sheet-lang-check {
+    margin-left: auto;
+}
+
+@keyframes sheetUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes sheetFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sheet-overlay, .settings-sheet { animation: none; }
+}

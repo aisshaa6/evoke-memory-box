@@ -6,6 +6,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Star, ArrowLeft, Camera, Mic, Square, Trash2, MapPin, Map } from 'lucide-react';
 import LocationMapPicker from '../components/LocationMapPicker';
 import { readImageFile, MAX_PHOTO_MB } from '../lib/image';
+import { DEFAULT_TAG_KEYS, normalizeTag } from '../i18n/tags';
 import './AddMemory.css';
 
 export default function AddMemory() {
@@ -14,14 +15,7 @@ export default function AddMemory() {
     const { isRecording, startRecording, stopRecording, audioBase64, audioSizeMB, clearAudio } = useAudioRecorder();
     const navigate = useNavigate();
 
-    const DEFAULT_TAGS = [
-        t('addMemory.tags.family'),
-        t('addMemory.tags.travel'),
-        t('addMemory.tags.work'),
-        t('addMemory.tags.special'),
-        t('addMemory.tags.nature'),
-        t('addMemory.tags.art')
-    ];
+    const DEFAULT_TAGS = DEFAULT_TAG_KEYS;
 
     const [title, setTitle] = useState('');
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
@@ -61,8 +55,9 @@ export default function AddMemory() {
 
     const addCustomTag = (e) => {
         e.preventDefault();
-        if (customTag.trim() && !tags.includes(customTag.trim())) {
-            setTags([...tags, customTag.trim()]);
+        const tag = normalizeTag(customTag.trim());
+        if (tag && !tags.includes(tag)) {
+            setTags([...tags, tag]);
         }
         setCustomTag('');
     };
@@ -93,7 +88,7 @@ export default function AddMemory() {
     return (
         <div className="page-container add-memory-container">
             <header className="page-header mb-4 flex-center" style={{ justifyContent: 'space-between' }}>
-                <button onClick={() => navigate('/home')} className="back-btn glass-btn">
+                <button onClick={() => navigate('/home')} className="back-btn glass-btn" aria-label={t('a11y.back')}>
                     <ArrowLeft size={24} color="var(--text-primary)" />
                 </button>
                 <h1 className="header-title" style={{ fontSize: '1.8rem', textAlign: 'center', whiteSpace: 'normal', overflowWrap: 'break-word', flex: 1, padding: '0 0.5rem' }}>{t('addMemory.pageTitle')}</h1>

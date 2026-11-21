@@ -1,5 +1,29 @@
 export const translations = {
     tr: {
+        nav: {
+            home: "Ana Sayfa",
+            browse: "Anılar",
+            add: "Yeni Anı",
+            calendar: "Takvim",
+            journal: "Günlük",
+            main: "Ana menü",
+        },
+        settings: {
+            title: "Görünüm ve Dil",
+            theme: "Tema",
+            language: "Dil",
+            close: "Kapat",
+        },
+        a11y: {
+            back: "Geri",
+            favorite: "Favorilere ekle",
+            unfavorite: "Favorilerden çıkar",
+            removePhoto: "Fotoğrafı kaldır",
+            removeAudio: "Ses kaydını kaldır",
+            previous: "Önceki",
+            next: "Sonraki",
+            profileMenu: "Profil menüsü",
+        },
         common: {
             back: "Geri Dön",
             save: "Kaydet",
@@ -224,6 +248,30 @@ export const translations = {
         }
     },
     en: {
+        nav: {
+            home: "Home",
+            browse: "Memories",
+            add: "New memory",
+            calendar: "Calendar",
+            journal: "Journal",
+            main: "Main menu",
+        },
+        settings: {
+            title: "Appearance & Language",
+            theme: "Theme",
+            language: "Language",
+            close: "Close",
+        },
+        a11y: {
+            back: "Back",
+            favorite: "Add to favorites",
+            unfavorite: "Remove from favorites",
+            removePhoto: "Remove photo",
+            removeAudio: "Remove recording",
+            previous: "Previous",
+            next: "Next",
+            profileMenu: "Profile menu",
+        },
         common: {
             back: "Back",
             add: "Add",
@@ -448,6 +496,30 @@ export const translations = {
         }
     },
     ru: {
+        nav: {
+            home: "Главная",
+            browse: "Воспоминания",
+            add: "Новое",
+            calendar: "Календарь",
+            journal: "Дневник",
+            main: "Главное меню",
+        },
+        settings: {
+            title: "Оформление и язык",
+            theme: "Тема",
+            language: "Язык",
+            close: "Закрыть",
+        },
+        a11y: {
+            back: "Назад",
+            favorite: "Добавить в избранное",
+            unfavorite: "Убрать из избранного",
+            removePhoto: "Удалить фото",
+            removeAudio: "Удалить запись",
+            previous: "Предыдущий",
+            next: "Следующий",
+            profileMenu: "Меню профиля",
+        },
         common: {
             back: "Назад",
             save: "Сохранить",

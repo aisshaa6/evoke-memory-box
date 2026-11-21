@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase, uploadDataUrl, signedUrl } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
+import { normalizeTags } from '../i18n/tags';
 
 // DB row → UI-ın gözlədiyi shape (photo/audio = göstərilə bilən URL)
 async function fromRow(row) {
@@ -12,7 +13,7 @@ async function fromRow(row) {
         date: row.date,
         note: row.note,
         location: row.location,
-        tags: row.tags || [],
+        tags: normalizeTags(row.tags),
         isFavorite: row.is_favorite,
         photo,
         audio,
@@ -73,7 +74,7 @@ export function useMemories() {
             date: memory.date || null,
             note: memory.note,
             location: memory.location,
-            tags: memory.tags || [],
+            tags: normalizeTags(memory.tags),
             is_favorite: !!memory.isFavorite,
             photo_path,
             audio_path,
@@ -91,7 +92,7 @@ export function useMemories() {
         if ('date' in updates) row.date = updates.date || null;
         if ('note' in updates) row.note = updates.note;
         if ('location' in updates) row.location = updates.location;
-        if ('tags' in updates) row.tags = updates.tags;
+        if ('tags' in updates) row.tags = normalizeTags(updates.tags);
         if ('isFavorite' in updates) row.is_favorite = !!updates.isFavorite;
         if ('photo' in updates) row.photo_path = await resolveMedia(user.id, updates.photo, current?.photoPath, `${id}-photo`);
         if ('audio' in updates) row.audio_path = await resolveMedia(user.id, updates.audio, current?.audioPath, `${id}-audio`);

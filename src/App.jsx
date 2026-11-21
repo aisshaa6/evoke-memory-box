@@ -8,28 +8,23 @@ import Statistics from './pages/Statistics';
 import MemoryDetail from './pages/MemoryDetail';
 import Calendar from './pages/Calendar';
 import MapView from './pages/MapView';
-import ThemePicker from './components/ThemePicker';
 import Journal from './pages/Journal';
 import Auth from './pages/Auth';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import LanguageSwitcher from './components/LanguageSwitcher';
+import BottomNav from './components/BottomNav';
+import { applyTheme, getSavedTheme } from './lib/themes';
 
 function App() {
   useEffect(() => {
-    const saved = localStorage.getItem('ani_kutusu_theme') || 'aurora';
-    if (saved && saved !== 'aurora') {
-      document.documentElement.setAttribute('data-theme', saved);
-    }
+    applyTheme(getSavedTheme());
   }, []);
 
   return (
     <LanguageProvider>
       <AuthProvider>
         <BrowserRouter>
-          <ThemePicker />
-          <LanguageSwitcher />
           <Routes>
             <Route path="/" element={<Entry />} />
             <Route path="/auth" element={<Auth />} />
@@ -43,6 +38,7 @@ function App() {
             <Route path="/map" element={<ProtectedRoute><MapView /></ProtectedRoute>} />
             <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
           </Routes>
+          <BottomNav />
         </BrowserRouter>
       </AuthProvider>
     </LanguageProvider>

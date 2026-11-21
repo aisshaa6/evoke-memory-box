@@ -203,7 +203,7 @@ export default function Journal() {
         <div className="page-container journal-container">
             {/* Header */}
             <header className="journal-header">
-                <button onClick={() => navigate('/home')} className="back-btn glass-btn">
+                <button onClick={() => navigate('/home')} className="back-btn glass-btn" aria-label={t('a11y.back')}>
                     <ArrowLeft size={24} color="var(--text-primary)" />
                 </button>
 

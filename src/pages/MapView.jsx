@@ -105,7 +105,7 @@ export default function MapView() {
         <div className="mapview-page">
             {/* Floating Header */}
             <div className="map-header glass-card">
-                <button onClick={() => navigate('/home')} className="back-btn glass-btn">
+                <button onClick={() => navigate('/home')} className="back-btn glass-btn" aria-label={t('a11y.back')}>
                     <ArrowLeft size={24} color="var(--text-primary)" />
                 </button>
                 <div>

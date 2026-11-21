@@ -559,3 +559,34 @@ textarea::placeholder {
 [data-theme="midnight"] .icon-btn:hover {
   background: rgba(255, 255, 255, 0.16);
 }
+/* Shared mobile fixes: back buttons were being squeezed to ~33px by long titles */
+.back-btn {
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .page-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .back-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .page-header .header-title {
+        font-size: 1.6rem !important;
+        line-height: 1.15;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-container {
+        animation: none;
+    }
+}
