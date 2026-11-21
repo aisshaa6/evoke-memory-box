@@ -5,13 +5,14 @@ import { ArrowLeft, Star, MapPin, Calendar, Tag, Edit3, Trash2, Save, X, Camera,
 import { useAudioRecorder } from '../hooks/useAudioRecorder';
 import { useLanguage } from '../contexts/LanguageContext';
 import LocationMapPicker from '../components/LocationMapPicker';
+import { readImageFile, MAX_PHOTO_MB } from '../lib/image';
 import './MemoryDetail.css';
 
 export default function MemoryDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { t, language, translateTag } = useLanguage();
-    const { memories, updateMemory, deleteMemory, toggleFavorite } = useMemories();
+    const { memories, loading, updateMemory, deleteMemory, toggleFavorite } = useMemories();
 
     const DEFAULT_TAGS = [
         t('addMemory.tags.family'),
@@ -40,6 +41,16 @@ export default function MemoryDetail() {
     const [isFavorite, setIsFavorite] = useState(false);
     const [customTag, setCustomTag] = useState('');
     const [editAudio, setEditAudio] = useState(null);
+
+    // Don't claim "not found" while the list is still loading from Supabase
+    if (!memory && loading) {
+        return (
+            <div className="page-container" role="status" aria-live="polite" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span className="auth-loading-spinner" style={{ borderColor: 'rgba(0,0,0,0.1)', borderTopColor: 'var(--text-primary)', width: 30, height: 30 }} />
+                <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>{t('common.loading')}</span>
+            </div>
+        );
+    }
 
     if (!memory) {
         return (
@@ -71,32 +82,19 @@ export default function MemoryDetail() {
         clearAudio();
     };
 
-    const handlePhotoUpload = (e) => {
+    const handlePhotoUpload = async (e) => {
         const file = e.target.files[0];
+        e.target.value = '';
         if (!file) return;
-
-        const sizeMB = file.size / (1024 * 1024);
-        if (sizeMB > 4) return; // silently reject — too large
-
-        if (sizeMB > 1) {
-            const img = new Image();
-            const url = URL.createObjectURL(file);
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const MAX = 1200;
-                let w = img.width, h = img.height;
-                if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
-                if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
-                canvas.width = w; canvas.height = h;
-                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                setPhoto(canvas.toDataURL('image/jpeg', 0.75));
-                URL.revokeObjectURL(url);
-            };
-            img.src = url;
-        } else {
-            const reader = new FileReader();
-            reader.onloadend = () => setPhoto(reader.result);
-            reader.readAsDataURL(file);
+        if (file.size / (1024 * 1024) > MAX_PHOTO_MB) {
+            alert(t('addMemory.photoTooLarge'));
+            return;
+        }
+        try {
+            const { dataUrl } = await readImageFile(file);
+            setPhoto(dataUrl);
+        } catch {
+            alert(t('addMemory.photoTooLarge'));
         }
     };
 
@@ -291,6 +289,8 @@ export default function MemoryDetail() {
                                     placeholder={t('addMemory.customTagPlaceholder')}
                                     value={customTag}
                                     onChange={e => setCustomTag(e.target.value)}
+                                onKeyDown={e => { if (e.key === 'Enter') addCustomTag(e); }}
+                                enterKeyHint="done"
                                     className="custom-tag-input premium-input"
                                 />
                                 <button type="button" onClick={addCustomTag} className="btn-secondary-outline glass-btn">

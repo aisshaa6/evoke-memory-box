@@ -37,7 +37,7 @@ export default function Journal() {
     const navigate = useNavigate();
     const location = useLocation();
     const { t } = useLanguage();
-    const { saveEntry, deleteEntry, getEntry, hasEntry } = useJournal();
+    const { loaded, saveEntry, deleteEntry, getEntry, hasEntry } = useJournal();
 
 
     const FE_MONTHS = t('journal.monthsFull');
@@ -105,15 +105,19 @@ export default function Journal() {
 
     const dateKey = toDateKey(currentDate);
 
-    // Load entry when date changes
+    // Load entry when the date changes or once entries arrive from the server.
+    // Before `loaded`, the editor is read-only so typing can't overwrite a saved entry.
     useEffect(() => {
+        if (!loaded) return;
         const entry = getEntry(dateKey);
         if (editorRef.current) {
             editorRef.current.innerHTML = entry?.content || '';
         }
-    }, [dateKey]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dateKey, loaded]);
 
     const triggerSave = useCallback(() => {
+        if (!loaded) return;
         clearTimeout(saveTimerRef.current);
         saveTimerRef.current = setTimeout(() => {
             if (editorRef.current) {
@@ -122,7 +126,7 @@ export default function Journal() {
                 setTimeout(() => setSavedIndicator(false), 1800);
             }
         }, 600);
-    }, [dateKey, saveEntry]);
+    }, [dateKey, saveEntry, loaded]);
 
     const exec = (command, value = null) => {
         editorRef.current?.focus();
@@ -347,7 +351,8 @@ export default function Journal() {
                     <div
                         ref={editorRef}
                         className="journal-editor"
-                        contentEditable
+                        contentEditable={loaded}
+                        aria-busy={!loaded}
                         suppressContentEditableWarning
                         onInput={triggerSave}
                         data-placeholder={t('journal.placeholder')}

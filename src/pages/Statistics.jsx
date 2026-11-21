@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMemories } from '../hooks/useMemories';
-import { ArrowLeft, PieChart, TrendingUp, Map, Star, Award, Layers } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Pie, Cell } from 'recharts';
+import { ArrowLeft, PieChart as PieChartIcon, TrendingUp, Map, Star, Award, Layers } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell } from 'recharts';
 import { useLanguage } from '../contexts/LanguageContext';
 import './Statistics.css';
 
@@ -57,7 +57,7 @@ export default function Statistics() {
             {totalMemories === 0 ? (
                 <div className="empty-state glass-card mt-5">
                     <div className="empty-icon-wrapper mb-3" style={{ background: 'rgba(138, 35, 135, 0.1)' }}>
-                        <PieChart size={48} color="#8A2387" />
+                        <PieChartIcon size={48} color="#8A2387" />
                     </div>
                     <h2>{t('stats.noDataTitle')}</h2>
                     <p className="text-secondary mt-2">{t('stats.noDataDesc')}</p>
